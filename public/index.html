@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ideas Collection App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1d1d1f;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #6e6e73;
+        }
+
+        .add-idea-form {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1d1d1f;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #0071e3;
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: #0071e3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .btn:disabled {
+            background: #d2d2d7;
+            cursor: not-allowed;
+        }
+
+        .ideas-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .idea-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .idea-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .idea-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .idea-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .idea-description {
+            color: #6e6e73;
+            margin-bottom: 16px;
+        }
+
+        .vote-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .vote-btn {
+            background: #34c759;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .vote-btn:hover {
+            background: #30b350;
+        }
+
+        .vote-count {
+            font-weight: 700;
+            color: #34c759;
+        }
+
+        .idea-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #f2f2f7;
+            font-size: 0.9rem;
+            color: #6e6e73;
+        }
+
+        .notes-section, .files-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f2f2f7;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1d1d1f;
+        }
+
+        .note, .file {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .note-content {
+            white-space: pre-wrap;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #0071e3;
+            text-decoration: none;
+        }
+
+        .file-name:hover {
+            text-decoration: underline;
+        }
+
+        .add-note-form, .add-file-form {
+            display: none;
+            margin-top: 12px;
+            padding: 16px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .add-note-form.active, .add-file-form.active {
+            display: block;
+        }
+
+        .toggle-btn {
+            background: #6e6e73;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+
+        .toggle-btn:hover {
+            background: #515154;
+        }
+
+        .file-input {
+            margin-bottom: 12px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6e6e73;
+        }
+
+        .error {
+            background: #ff3b30;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .success {
+            background: #34c759;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💡 Ideas Collection</h1>
+            <p class="subtitle">Capture, vote, and collaborate on ideas</p>
+        </header>
+
+        <div id="message"></div>
+
+        <div class="add-idea-form">
+            <h2>Add New Idea</h2>
+            <form id="ideaForm">
+                <div class="form-group">
+                    <label for="title">Title *</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" placeholder="Describe your idea..."></textarea>
+                </div>
+                <button type="submit" class="btn">Add Idea</button>
+            </form>
+        </div>
+
+        <div id="ideasContainer">
+            <div class="loading">Loading ideas...</div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
